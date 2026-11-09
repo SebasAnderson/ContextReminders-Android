@@ -2,8 +2,6 @@ package com.anderson.contextreminders.model
 
 /**
  * Sealed class para representar los posibles estados de un recordatorio.
- * A diferencia de un enum simple, las sealed classes permiten que subtipos
- * específicos almacenen datos adicionales (como la razón de archivo en Archived).
  */
 sealed class ReminderStatus(val displayName: String) {
     data object Pending : ReminderStatus("Pendiente")
@@ -18,5 +16,14 @@ sealed class ReminderStatus(val displayName: String) {
             Completed,
             Archived()
         )
+
+        fun fromName(name: String?): ReminderStatus {
+            return when (name?.lowercase()?.trim()) {
+                "completado", "completed" -> Completed
+                "en progreso", "inprogress" -> InProgress
+                "archivado", "archived" -> Archived()
+                else -> Pending
+            }
+        }
     }
 }

@@ -2,8 +2,6 @@ package com.anderson.contextreminders.model
 
 /**
  * Representa la prioridad de un recordatorio mediante una sealed class.
- * Al usar sealed class aseguramos exhaustividad en expresiones 'when'
- * y permitimos atributos enriquecidos para la interfaz.
  */
 sealed class Priority(
     val displayName: String,
@@ -17,5 +15,14 @@ sealed class Priority(
 
     companion object {
         val all: List<Priority> = listOf(Low, Medium, High, Urgent)
+
+        fun fromName(name: String?): Priority {
+            return when (name?.lowercase()?.trim()) {
+                "baja", "low" -> Low
+                "alta", "high" -> High
+                "urgente", "urgent" -> Urgent
+                else -> Medium
+            }
+        }
     }
 }
